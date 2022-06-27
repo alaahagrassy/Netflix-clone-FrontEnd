@@ -17,8 +17,8 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 import {Link} from "react-router-dom"
-import img1 from '../../assets/Polygon 1.png'
-import img2 from '../../assets/STRIMIX.png'
+
+import logoImage from '../../assets/LOGO-User-navBar.svg'
 
 const pages = ['Home', 'Tv Shows', 'Movies', 'My List'];
 const settings = ['Profiles', 'Manage Profiles', 'Exit Profile', 'Account', 'Sign out'];
@@ -119,8 +119,8 @@ const Navbar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        <img src={img1} alt="" />
-                        <img src={img2} alt="" />
+                    
+                        <img src={logoImage} alt='logo'/>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
