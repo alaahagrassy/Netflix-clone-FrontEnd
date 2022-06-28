@@ -130,6 +130,7 @@ const LoginForm = () => {
       <TextField
       autoComplete="off"
         required
+        autoComplete="off"
         id="Email"
         label="Email"
         color="secondary"
@@ -150,6 +151,7 @@ const LoginForm = () => {
       <TextField
       autoComplete="off"
         required
+        autoComplete="off"
         id="Password"
         label="password"
         color="secondary"

@@ -17,11 +17,13 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 import {Link} from "react-router-dom"
+
 import img1 from '../../assets/Polygon 1.png'
 import img2 from '../../assets/STRIMIX.png'
 import axios from 'axios';
 import { useDispatch  , useSelector} from 'react-redux';
 import AuthenticationSliceActions from '../../Redux/AuthenticationSlice';
+
 
 
 const pages = ['Home', 'Movies', 'My List' , "Watched Now"];
@@ -135,8 +137,8 @@ const Navbar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        <img src={img1} alt="" />
-                        <img src={img2} alt="" />
+                    
+                        <img src={logoImage} alt='logo'/>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

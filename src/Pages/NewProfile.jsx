@@ -64,22 +64,20 @@ const LargeButton = styled(Button)(({ theme }) => ({
     p: 4,
     fontSize:'2rem' , fontWeight:'bold',
   };
+
+
+
   let token = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')).token : ''
   console.log(JSON.stringify(token));
 
-let config = {
-    headers:{
-         Authorization: token ? token : ''  
-    }
-  };
-  console.log(token)
 const NewProfile=(props)=> {
   // const accountOwner=useSelector((state)=>{
   //   return state
   //  })]
 
   const [users,setUsers]=useState([])
-  // const token = localStorage.getItem("token");
+   const token = JSON.parse(localStorage.getItem("token"));
+   console.log(token)
   const id = localStorage.getItem("id"); //user id
   const [userName,setName]= useState('')
   const [email,setEmail]= useState('')
@@ -122,44 +120,66 @@ const NewProfile=(props)=> {
        loadUsers()
     },[])
 
-    async function loadUsers() {
-      await fetch('http://localhost:3001/profile/one', {
-        method:"get",
-        headers: {
-          "Authorization": token
-        }
-      })
-        .then(resp => resp.json())
-        .then(result => {
-          setUsers(result.data)
-          console.log(result)
-        }
-        )
+//     function loadUsers() {
+//       axios.get('http://localhost:3001/profile/one',
+//       { headers:
+//         {"Authorization" : `${token}`} }
+//         )
+//      .then(res => {
+//      console.log(res.data);
+//      setUsers(res.data)
+//      })
+//     .catch((error) => {
+//  console.log(error)
+//     }
+//         )
   
-    }
-    // const loadUsers= async()=>{
-    //     const result=await axios.get('http://localhost:3001/profile/one')
-    //     console.log(result)
-    //     setUsers(result.data)
-    // }
 
-    // const createProfile= ({userName , Navigate} )=>{
-    //   e.preventDefault();
-    //   await axios.post("http://localhost:3001/profile",{name: userName},config)
-    //   .then( (response) => {
-    //    localStorage.setItem("Authentication", JSON.stringify({userName:user.userName}))
-    //     localStorage.setItem('token' , JSON.stringify(response.data.token))
-    //    config.headers.Authorization = JSON.parse(localStorage.getItem('token'))})
+//     }
+   function loadUsers(){
+        axios.get('http://localhost:3001/profile/one',
+        { headers:
+          {"Authorization" : `${token}`} 
+        })
+        .then(res => {
+          console.log(res.data);
+          setUsers(res.data)
+          })
+         .catch((error) => {
+      console.log(error)
+    })
+   }
+
+  
+ 
     
-    //           })
-    //   }
-    
+
     // }
     const createProfile=async (e)=>{
+
       let user={userName}
 
+
       e.preventDefault();
+      axios.post('http://localhost:3001/profile' ,{userName},
+       { headers:
+         {"Authorization" : `${token}`} }
+         )
+      .then(res => {
+      console.log(res.data);
+      setUsers(res.data)
+        loadUsers()
+      })
+     .catch((error) => {
+  console.log(error)
+}
+
+);
+    //   let user={userName}
+
+    //   e.preventDefault();
       
+
       console.warn("user", user)
       const res = await axios.post('http://localhost:3001/profile' , user,{
         headers:{
@@ -168,6 +188,21 @@ const NewProfile=(props)=> {
       })
       console.log(res);
   
+      fetch('http://localhost:3001/profile', {
+      method: 'POST',
+      headers: {
+        'Authorization': token
+      },
+      body: JSON.stringify(user)
+    })
+      .then((result => {
+        console.warn(result)
+        console.log(result.data)
+        setUsers(users)
+        loadUsers()
+      }
+      ))
+
     //   fetch('http://localhost:3001/profile', {
     //   method: 'POST',
     //   headers: {
@@ -182,7 +217,8 @@ const NewProfile=(props)=> {
     //     loadUsers()
     //   }
     //   ))
-      handleClose2()
+       handleClose2()
+
   
     }
   
@@ -241,12 +277,12 @@ const NewProfile=(props)=> {
    </h3>
  
        <div className="container">
-               { users ? (
+               { users &&
                   users.map((user) => (
       <div className="card">
       <img src={userImg} />
         <div className="details">
-          <h3>{user.name}</h3>
+          <h3>{user.userName}</h3>
          
           
           <div className="social-links">
@@ -254,12 +290,12 @@ const NewProfile=(props)=> {
              <Icon icon="carbon:view" color="green" inline={true} style={{fontSize:'2rem'}} />
             </Link>
             <Link to=''>
-            <Icon icon="akar-icons:edit" color="lightblue" inline={true} style={{fontSize:'2rem'}} onClick={() => showing(user.id)}/>
+            <Icon icon="akar-icons:edit" color="lightblue" inline={true} style={{fontSize:'2rem'}} onClick={() => showing(user._id)}/>
             </Link>
             <Link to=''>
             <Icon icon="ant-design:delete-outlined" color="red" inline={true} style={{fontSize:'2rem'}}  onClick={() => {
                           if (window.confirm('Do you want to delete this user?')) {
-                            deleteProfile(user.id)
+                            deleteProfile(user._id)
                           }
                         }} />
             </Link>
@@ -280,9 +316,10 @@ const NewProfile=(props)=> {
       </div>
        </div>
                   ))
-              ) : (
-                  <div style={{color:"white"}}>Looooooooading...</div>
-              )}
+              // ) : (
+              //     <div style={{color:"white"}}>Looooooooading...</div>
+              // )
+              }
               <Button onClick={() => handleShow2()} className='btn btn-outline-light' style={{ color: "#12C6B2", textDecoration: "none" ,fontSize:"100px", outline:"light" }} >
           {/* <Link to='/users/add'> */}
               <Icon icon="carbon:add-alt" />
