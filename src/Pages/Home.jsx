@@ -10,7 +10,7 @@ import WatchNow from '../Components/WatchNow';
 const Home = () => {
 
     return (
-        <Box component='section' >
+        <Box component='section' sx={{paddingTop:'7rem'}}>
         <Header />
         <CompatableSection />
         <ImageContainer />
