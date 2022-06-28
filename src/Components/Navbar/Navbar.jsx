@@ -18,9 +18,15 @@ import InputBase from '@mui/material/InputBase';
 import useScrollTrigger from "@mui/material/useScrollTrigger"
 import {Link} from "react-router-dom"
 
-import logoImage from '../../assets/LOGO-User-navBar.svg'
+import img1 from '../../assets/Polygon 1.png'
+import img2 from '../../assets/STRIMIX.png'
+import axios from 'axios';
+import { useDispatch  , useSelector} from 'react-redux';
+import AuthenticationSliceActions from '../../Redux/AuthenticationSlice';
 
-const pages = ['Home', 'Tv Shows', 'Movies', 'My List'];
+
+
+const pages = ['Home', 'Movies', 'My List' , "Watched Now"];
 const settings = ['Profiles', 'Manage Profiles', 'Exit Profile', 'Account', 'Sign out'];
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,9 +71,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const handleChange= (e) =>{
-    console.log(e.target.value);
-}
+
 
 function AppBarS({children}){
     const trigger =useScrollTrigger();
@@ -84,7 +88,8 @@ function AppBarS({children}){
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const isLoggedIn =useSelector((state)=>state.IsLogged)
+    const Dispatch = useDispatch()
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -99,7 +104,20 @@ const Navbar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
+    const handleChange=  (e) =>{
+        let q = e.target.value
+        console.log(q);
+        setTimeout(async ()=>{
+            const res = await axios.post(`http://localhost:3001/movie/search` , {q})
+            console.log(res.data);
+            Dispatch(AuthenticationSliceActions.AddMovie(res.data))
+//   
+//     })
+        },1000)
+    }
+    const logOutHandler = () => {
+        Dispatch(AuthenticationSliceActions.logOut())
+      }
     return (
         <AppBarS position="fixed"  >
             <Container maxWidth="xl">
@@ -182,7 +200,7 @@ const Navbar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Link to={`${page}`}>
+                            <Link to={`${page}`} key={page}>
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -227,12 +245,33 @@ const Navbar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center" href="/">{setting}</Typography>
+                            {/* const settings = ['Profiles', 'Manage Profiles', 'Exit Profile', 'Account', 'Sign out']; */}
+                                <Link to="">
+                                <MenuItem  onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">Profiles</Typography>
                                 </MenuItem>
-                            ))}
-                            <a href="/">ddd</a>
+                                </Link>
+                                <Link to="">
+                                <MenuItem  onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">Manage Profiles</Typography>
+                                </MenuItem>
+                                </Link>
+                                <Link to="">
+                                <MenuItem  onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">Exit Profile</Typography>
+                                </MenuItem>
+                                </Link>
+                                <Link to="/account" onClick={handleCloseUserMenu}>
+                                <MenuItem >
+                                    <Typography textAlign="center">Account</Typography>
+                                </MenuItem>
+                                </Link>
+                                <Link to="" onClick={logOutHandler}>
+                                <MenuItem  onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center" >Sign out</Typography>
+                                </MenuItem>
+                                </Link>
+                            
                         </Menu>
                     </Box>
                 </Toolbar>

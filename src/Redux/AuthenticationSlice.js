@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { IsloggedIn: false, Email: "", Password: "", token: "" , FirstName:"" , LastName:"" , CardNumber:"" , phoneNumber:'' , userPlan: '' , planChosen: false , error : '' , isLoading :false , planRequestError : false , userDevice : '' };
+const initialState = { IsloggedIn: false, Email: "", Password: "", token: "" , FirstName:"" , LastName:"" , CardNumber:"" , phoneNumber:'' , userPlan: '' , planChosen: false , error : '' , isLoading :false , planRequestError : false , userDevice : '' , movies:[]};
 
  export const AuthenticationSlice = createSlice({
   name: "authentication",
@@ -57,7 +57,12 @@ const initialState = { IsloggedIn: false, Email: "", Password: "", token: "" , F
       },
     setUserDevice : (state , {payload}) => {
       state.userDevice = payload
-    }
+    },
+    AddMovie: (state, { payload }) => {
+      if (payload) {
+          state.movies = payload
+      }
+  }
 
     }
   },

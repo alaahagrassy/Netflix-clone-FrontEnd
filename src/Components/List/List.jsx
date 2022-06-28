@@ -50,7 +50,6 @@ const SmaplePrevArrow = (props) => {
 }
 
 const List = ({list}) => {
-    console.log(list);
     const settings = {
         dots: false,
         infinite: true,

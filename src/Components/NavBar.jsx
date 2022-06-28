@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useSelector , useDispatch } from 'react-redux';
 import  AuthenticationSliceActions  from '../Redux/AuthenticationSlice';
-import logoImage from '../../src/assets/LOGO-User-navBar.svg'
+
 const StyledLink = styled(Link)`
   text-decoration: none;
 
@@ -56,23 +56,7 @@ const NavBar = () => {
               color: "red",
             }}
           >
-            <Link to="/home">
-               <img src={logoImage} alt='logo'/>
-            </Link>
-          </Stack>
-        </Box>
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-          sx={{
-            paddingRight: "3rem",
-          }}
-        >
-          {/* <StyledLink to="/NewProfile">
-                  Users
-              </StyledLink> */}
-        </Stack>
+
         <Box variant="div" sx={{ width: "100%", height: "100%" }}>
           <Stack
             direction="row"
@@ -84,23 +68,10 @@ const NavBar = () => {
               textDecoration: "none !important",
             }}
           >
-            {!IsloggedIn && (
-              <StyledLink
-                to="/login"
-                style={{ color: "#12C6B2", fontSize: "1rem" }}
-              >
-                Sign in
-              </StyledLink>
-            )}
-            {IsloggedIn && (
-              <StyledLink
-                to="/home"
-                onClick={logOutHandler}
-                style={{ color: "#12C6B2", fontSize: "1rem" }}
-              >
-                log out
-              </StyledLink>
-            )}
+
+           { !IsloggedIn && <StyledLink to="/Login" style={{color:'#12C6B2' , fontSize:'1rem'}}>Login</StyledLink> }
+           { IsloggedIn && <StyledLink to="/home" onClick={logOutHandler} style={{color:'#12C6B2' , fontSize:'1rem'}}>log out</StyledLink> }
+
           </Stack>
         </Box>
       </Stack>
