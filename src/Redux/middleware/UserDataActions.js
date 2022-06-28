@@ -22,7 +22,7 @@ export const UserRegisterHandler = (userData) => {
             Dispatch(AuthenticationSliceActions.setIsLoading(false))
             Dispatch(AuthenticationSliceActions.SignUp({token:response.data.token ,Email:userData.Email , Password: userData.Password }))
             Dispatch(AuthenticationSliceActions.logIn({token:response.data.token}))
-            localStorage.setItem('token' , JSON.stringify(response.data.token))
+            localStorage.setItem('token' , JSON.stringify(response.data.token.token))
             config.headers.Authorization = JSON.parse(localStorage.getItem('token'))
             userData.Navigate('/plandetails')
         }).catch((err) => {
@@ -66,7 +66,9 @@ export const UserLoginHandler = ({userName , Password , Navigate} ) => {
             console.log(response);
             Dispatch(AuthenticationSliceActions.setIsLoading(false))
             Dispatch(AuthenticationSliceActions.logIn({token: response.data}))
-            localStorage.setItem('token' , JSON.stringify(response.data))
+            console.log(response.data);
+            localStorage.setItem('token' , JSON.stringify(response.data.token))
+            localStorage.setItem('user' , JSON.stringify(response.data.user))
             Navigate('/Home')
         })
         

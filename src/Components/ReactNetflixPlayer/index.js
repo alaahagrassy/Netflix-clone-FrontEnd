@@ -74,7 +74,7 @@ export default function ReactNetflixPlayer({
   autoControllCloseEnabled = true,
 
   // Styles
-  primaryColor = 'red',
+  primaryColor = 'rgb(18,198,178)',
   secundaryColor = '#ffffff',
   fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
 

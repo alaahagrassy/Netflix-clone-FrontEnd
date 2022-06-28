@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios"
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-// import ListItem from '../../components/ListItem/ListItem';
 import ListItem from '../../Components/ListItem/ListItem'
+import { useSelector } from 'react-redux';
+
 import './movies.css'
 const Movies = () => {
+    const Movies = useSelector((state) => state.movies)
+
     const [movies, setMovies] = useState(null)
     const [data, setData] = useState([])
     const [genr , setGenre] = useState(null)
@@ -18,6 +21,18 @@ const Movies = () => {
         }
         fetchData();
     }, []);
+
+    useEffect(()=>{
+        if(!Movies.length)
+        {
+            console.log("here");        
+            console.log(data);
+            setMovies(data)
+            console.log(movies);
+
+        }
+        setMovies(Movies)
+    },[Movies])
 
     const handleChange =(e)=>{
         setGenre(e.target.value)

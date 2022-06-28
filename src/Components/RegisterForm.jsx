@@ -140,6 +140,7 @@ const RegisterForm = ({ classes }) => {
       }}
     >
       <TextField
+      autoComplete="off"
         required
         id="Email"
         label="Email"
@@ -164,6 +165,7 @@ const RegisterForm = ({ classes }) => {
       />
 
       <TextField
+      autoComplete="off"
         required
         id="Password"
         label="password"

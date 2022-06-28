@@ -1,20 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Loader from "./Components/Loader";
-// import NavBar from "./Components/NavBar/Navbar";
-import NavBar from "./Components/Navbar/Navbar"
+import NavBar from "./Components/NavBar";
+import NavBarA from "./Components/Navbar/Navbar"
 import Footer from "./Components/Footer";
 // import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material";
 import { Theme } from "./styles/Theme";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import AuthenticationSliceActions from "./Redux/AuthenticationSlice";
+import { Navigate } from "react-router-dom";
 import "./app.css"
+
 
 const Home = lazy(() => import("./Pages/Home"));
 const HomeA =lazy(()=>import("./Pages/home/HomeA"))
 const Movies =lazy(()=>import("./Pages/Movies/Movies"))
+const MyList =lazy(()=>import('./Pages/myList/MyList'))
+const Account =lazy(()=>import('./Pages/account/Account'))
+const Watched = lazy(()=>import('./Pages/watchNow/WatchNow'))
 const Watch =lazy(()=>import("./Pages/movie/Movie"))
 const Login = lazy(() => import("./Pages/Login"));
 const Register = lazy(() => import("./Pages/Register"));
@@ -34,10 +39,14 @@ const User=lazy(()=>import('./Components/Users/User'))
 
 const App = () => {
   const Dispatch = useDispatch();
+  const isLoggedIn =useSelector((state)=>state.IsloggedIn)
+  console.log(isLoggedIn);
 
   useEffect(() => {
   
     const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : "";
+    const user =localStorage.getItem("user")
+
     const authenticationData = localStorage.getItem('Authentication') ? JSON.parse(localStorage.getItem('Authentication')) : '';
     const { FirstName, LastName, PhoneNumber, cardNumber } =
       localStorage.getItem("userdata") ? JSON.parse(localStorage.getItem("userdata")): "";
@@ -61,12 +70,15 @@ const App = () => {
         {/* <CssBaseline /> */}
         <Suspense fallback={<Loader />}>
           <BrowserRouter>
-            <NavBar />
+            {isLoggedIn?<NavBarA />: <NavBar/>}
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<HomeA />} />
-              <Route path="/Movies" element={<Movies />} />
-              <Route path="/watch/:id" element={<Watch />} />
+              <Route path="/" element={!isLoggedIn?<Home />:<Navigate to="/home" replace={true} />} />
+              <Route path="/home" element={isLoggedIn?<HomeA /> :<NotFound />} />
+              <Route path="/Movies" element={isLoggedIn?<Movies />:<NotFound />} />
+              <Route path="/My%20List" element={isLoggedIn?<MyList />:<NotFound />} />
+              <Route path="/Watched%20Now" element={isLoggedIn?<Watched />:<NotFound />} />
+              <Route path="/watch/:id" element={isLoggedIn?<Watch />:<NotFound />} />
+              <Route path="/account" element={isLoggedIn?<Account />:<NotFound />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/setup" element={<Setup />} />
